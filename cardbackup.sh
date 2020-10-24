@@ -25,12 +25,11 @@ echo -e "\e[48;5;17m \____/\__,_|_|  \__,_| \____/ \__,_|\___|_|\_\  \___/| .__/
 echo "2020                                                  | |     ";
 echo -e "                                                      |_|     \e[39m";
 
-
-
+date
 
 # _____________ SELECT MEDIA ____________________
 
-echo -e "\e[44mList of connected medias\e[49m"
+echo -e "\n\e[44mList of connected medias\e[49m"
 
 
 list=$(lsblk -lo MOUNTPOINT | grep ^/media)
@@ -122,12 +121,13 @@ confirm "you have choosen the backup directory $dir"
 
 
 echo -e "\e[34m"
-rsync -avh --progress --stats --preallocate $src $dir
+rsync -avh --progress --stats --log-file=$TMP_DIR/rsync.log --preallocate $src $dir
 echo -e "\e[39m"
 
+cardname=$(basename $src)
 
 case "$choice" in
-y | Y) ./analysedir.sh "$dir" ;;
+y | Y) ./analysedir.sh "$dir/$cardname" ;;
 
 esac
 

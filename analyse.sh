@@ -1,13 +1,15 @@
 #!/bin/bash
 
+TMP_DIR=${TMP_DIR:-$(mktemp -dt cardbackup-XXXXXXXX)}
+
+echo "temporary directory : $TMP_DIR"
+
 filename=$(basename "$1")
 FileSize=$(mediainfo --Inform="General;%FileSize%" "$1")
 FileSizeString4=$(mediainfo --Inform="General;%FileSize/String3%" "$1")
 
 echo -e "\n"
 echo -e "\e[34m\e[1mfilename           : $filename\e[0m"
-echo "size               : $FileSizeString4"
-echo "size (bytes)       : $FileSize"
 
 
 echo "\\subsection{$filename}" >> $TMP_DIR/summary.tex
@@ -18,8 +20,8 @@ echo "\\subsubsection{mediainfo}" >> $TMP_DIR/summary.tex
 
 echo "\\begin{lstlisting}" >> $TMP_DIR/summary.tex
 
-echo "size               : $FileSizeString4" >> $TMP_DIR/summary.tex
-echo "size (bytes)       : $FileSize" >> $TMP_DIR/summary.tex
+echo "size               : $FileSizeString4" | tee -a $TMP_DIR/summary.tex
+echo "size (bytes)       : $FileSize" | tee -a $TMP_DIR/summary.tex
 
 
 
@@ -41,37 +43,50 @@ then
     ChromaSubsamplingString=$(mediainfo --Inform="Video;%ChromaSubsampling/String%" "$1")
     BitDepthString=$(mediainfo --Inform="Video;%BitDepth/String%" "$1")
 
-    echo "format             : $Format"
-    echo "videoformat        : $VideoFormat"
-    echo "framerate          : $FrameRateString"
-    echo "width              : $WidthString"
-    echo "height             : $HeightString"
-    echo "duration           : $DurationString4"
-    echo "bitrate            : $BitRateString"
-    echo "aspect ratio       : $AspectRatio"
-    echo "scan type          : $ScanTypeString"
-    echo "chroma subsampling : $ChromaSubsamplingString"
-    echo "bit depth          : $BitDepthString"
-    
-    
+    echo "format             : $Format" | tee -a $TMP_DIR/summary.tex
+    echo "videoformat        : $VideoFormat" | tee -a $TMP_DIR/summary.tex
+    echo "framerate          : $FrameRateString" | tee -a $TMP_DIR/summary.tex
+    echo "width              : $WidthString" | tee -a $TMP_DIR/summary.tex
+    echo "height             : $HeightString" | tee -a $TMP_DIR/summary.tex
+    echo "duration           : $DurationString4" | tee -a $TMP_DIR/summary.tex
+    echo "bitrate            : $BitRateString" | tee -a $TMP_DIR/summary.tex
+    echo "aspect ratio       : $AspectRatio" | tee -a $TMP_DIR/summary.tex
+    echo "scan type          : $ScanTypeString" | tee -a $TMP_DIR/summary.tex
+    echo "chroma subsampling : $ChromaSubsamplingString" | tee -a $TMP_DIR/summary.tex
+    echo "bit depth          : $BitDepthString" | tee -a $TMP_DIR/summary.tex
+
+
+    echo "\\end{lstlisting}" >> $TMP_DIR/summary.tex
 
     # Screenshots
 
-    sdir="./screenshots/"
-    mkdir -p $sdir
+    screendir="$TMP_DIR/screenshots"
+    mkdir $screendir
+
+    md5=$(echo $1 | md5sum | cut -d' ' -f1)
+    echo $md5
 
     let "d = $Duration"
     let "d = d / 1000"
     let "m = d / 2"
     let "l = d - 1"
-    ffmpeg -y -loglevel fatal -ss 1 -i "$1" -vframes 1 -q:v 2 "$sdir$filename"_screenshot0.jpg
-    ffmpeg -y -loglevel fatal -ss $m -i "$1" -vframes 1 -q:v 2 "$sdir$filename"_screenshot1.jpg
-    ffmpeg -y -loglevel fatal -ss $l -i "$1" -vframes 1 -q:v 2 "$sdir$filename"_screenshot2.jpg
+    ffmpeg -y -loglevel fatal -ss 1 -i "$1" -vframes 1 -q:v 2 "$screendir/$md5-screenshot0.jpg"
+    ffmpeg -y -loglevel fatal -ss $m -i "$1" -vframes 1 -q:v 2 "$screendir/$md5-screenshot1.jpg"
+    ffmpeg -y -loglevel fatal -ss $l -i "$1" -vframes 1 -q:v 2 "$screendir/$md5-screenshot2.jpg"
+
+    echo "\\subsubsection{screenshots}" >> $TMP_DIR/summary.tex
+    echo "\\noindent" >> $TMP_DIR/summary.tex
+    echo "\\begin{tabular}{lll}" >> $TMP_DIR/summary.tex
+    echo "\\includegraphics[width=0.3\\textwidth]{$screendir/$md5-screenshot0.jpg} &" >> $TMP_DIR/summary.tex
+    echo "\\includegraphics[width=0.3\\textwidth]{$screendir/$md5-screenshot1.jpg} &" >> $TMP_DIR/summary.tex
+    echo "\\includegraphics[width=0.3\\textwidth]{$screendir/$md5-screenshot2.jpg} \\\\" >> $TMP_DIR/summary.tex
+    echo "\\end{tabular}" >> $TMP_DIR/summary.tex
 
 
+else
+    echo "\\end{lstlisting}" >> $TMP_DIR/summary.tex
 fi
 
-echo "\\end{lstlisting}" >> $TMP_DIR/summary.tex
 
 
 
