@@ -2,8 +2,6 @@
 
 TMP_DIR=${TMP_DIR:-$(mktemp -dt cardbackup-XXXXXXXX)}
 
-echo "temporary directory : $TMP_DIR"
-
 filename=$(basename "$1")
 FileSize=$(mediainfo --Inform="General;%FileSize%" "$1")
 FileSizeString4=$(mediainfo --Inform="General;%FileSize/String3%" "$1")
@@ -61,18 +59,19 @@ then
     # Screenshots
 
     screendir="$TMP_DIR/screenshots"
-    mkdir $screendir
+    mkdir -p $screendir
 
     md5=$(echo $1 | md5sum | cut -d' ' -f1)
+    screenquality="-vf scale=1280:-1 -q:v 5"
     echo $md5
 
     let "d = $Duration"
     let "d = d / 1000"
     let "m = d / 2"
     let "l = d - 1"
-    ffmpeg -y -loglevel fatal -ss 1 -i "$1" -vframes 1 -q:v 2 "$screendir/$md5-screenshot0.jpg"
-    ffmpeg -y -loglevel fatal -ss $m -i "$1" -vframes 1 -q:v 2 "$screendir/$md5-screenshot1.jpg"
-    ffmpeg -y -loglevel fatal -ss $l -i "$1" -vframes 1 -q:v 2 "$screendir/$md5-screenshot2.jpg"
+    ffmpeg -y -loglevel fatal -ss 1 -i "$1" -vframes 1 $screenquality "$screendir/$md5-screenshot0.jpg"
+    ffmpeg -y -loglevel fatal -ss $m -i "$1" -vframes 1 $screenquality "$screendir/$md5-screenshot1.jpg"
+    ffmpeg -y -loglevel fatal -ss $l -i "$1" -vframes 1 $screenquality "$screendir/$md5-screenshot2.jpg"
 
     echo "\\subsubsection{screenshots}" >> $TMP_DIR/summary.tex
     echo "\\noindent" >> $TMP_DIR/summary.tex
