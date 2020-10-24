@@ -12,13 +12,13 @@ echo -e "\n"
 echo -e "\e[34m\e[1mfilename           : $filename\e[0m"
 
 
-echo "\\subsection{$filename}" >> $TMP_DIR/summary.tex
+echo "\\subsection{\\lstinline{$filename}}" >> $TMP_DIR/summary.tex
 
-echo "\\lstinline{$1}" >> $TMP_DIR/summary.tex
+echo "\\Verb!$1!" >> $TMP_DIR/summary.tex
 
 echo "\\subsubsection{mediainfo}" >> $TMP_DIR/summary.tex
 
-echo "\\begin{lstlisting}" >> $TMP_DIR/summary.tex
+echo "\\begin{Verbatim}" >> $TMP_DIR/summary.tex
 
 echo "size               : $FileSizeString4" | tee -a $TMP_DIR/summary.tex
 echo "size (bytes)       : $FileSize" | tee -a $TMP_DIR/summary.tex
@@ -56,7 +56,7 @@ then
     echo "bit depth          : $BitDepthString" | tee -a $TMP_DIR/summary.tex
 
 
-    echo "\\end{lstlisting}" >> $TMP_DIR/summary.tex
+    echo "\\end{Verbatim}" >> $TMP_DIR/summary.tex
 
     # Screenshots
 
@@ -84,7 +84,7 @@ then
 
 
 else
-    echo "\\end{lstlisting}" >> $TMP_DIR/summary.tex
+    echo "\\end{Verbatim}" >> $TMP_DIR/summary.tex
 fi
 
 

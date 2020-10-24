@@ -21,7 +21,10 @@ report() {
     summary="$TMP_DIR/summary.tex"
     log="$TMP_DIR/rsync.log"
     ./analysedir.sh "$1"
-    sed -e "s#<summary>#\\\input{$summary}#g" $template | sed -e "s#<log>#\\\lstinputlisting{$log}#g" > $report
+    cat $template \
+        | sed -e "s#<summary>#\\\input{$summary}#g" \
+        | sed -e "s#<log>#\\\VerbatimInput{$log}#g" \
+        > $report
     pdflatex $report --interaction batchmode 1> /dev/null
 }
 

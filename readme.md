@@ -10,7 +10,7 @@
 
 ```
 
-![](https://img.shields.io/github/languages/top/vincent-peugnet/cardbackup?color=green)
+![language badge](https://img.shields.io/github/languages/top/vincent-peugnet/cardbackup?color=green)
 
 Card BackUp is the only good thing that came up in 2020.
 
@@ -28,6 +28,7 @@ Don't expect any GUI fancy button, CBU is an __nteractive Script__ in a __beauti
 - mediainfo
 - ffmpeg
 - tree
+- latex
 - coreutils
 
 
@@ -36,7 +37,7 @@ Don't expect any GUI fancy button, CBU is an __nteractive Script__ in a __beauti
 1. dowload the folder
 2. install dependencies using following line on debian and derivated distributions
     ```
-    sudo apt install rsync mediainfo ffmpeg tree
+    sudo apt install rsync mediainfo ffmpeg tree texlive texlive-latex-extra
     ```
 3. open the terminal in the folder, then type the following
     ```
