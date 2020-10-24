@@ -15,6 +15,16 @@ confirm() {
     esac
 }
 
+report() {
+    template="./report/report_template.tex"
+    report="$TMP_DIR/report.tex"
+    summary="$TMP_DIR/summary.tex"
+    log="$TMP_DIR/rsync.log"
+    ./analysedir.sh "$1"
+    sed -e "s#<summary>#\\\input{$summary}#g" $template | sed -e "s#<log>#\\\lstinputlisting{$log}#g" > $report
+    pdflatex $report --interaction batchmode
+}
+
 
 echo -e "\e[93m _____               _  ______            _      _   _        ";
 echo "/  __ \             | | | ___ \          | |    | | | |       ";
@@ -127,7 +137,9 @@ echo -e "\e[39m"
 cardname=$(basename $src)
 
 case "$choice" in
-y | Y) ./analysedir.sh "$dir/$cardname" ;;
+y | Y) report "$dir/$cardname" ;;
+
+
 
 esac
 
