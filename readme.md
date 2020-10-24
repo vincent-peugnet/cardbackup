@@ -36,3 +36,23 @@ As backup is a critical step in any production, I don't think this could be seri
     ./cardbackup.sh
     ```
 4. follow the step inside the program
+
+## What does CardBackup actually do ?
+
+When you launch the script, it will ask you to choose a removable device to copy.
+
+Then you'll have to choose a back-up destination on your computer or external drives.
+
+Afterwhat you can choose a folder name to put the card in.
+
+Then CBU will copy your files and compare MD5 checksums.
+
+A summary of the copy is displayed in your shell, indicating which files were copied or any errors that occured.
+
+It will analyse the copied card using mediainfo to create a little log and take some screenshots of the video files. 
+
+
+## To Do
+
+- Check if there is enought disk space before copying the card
+- Create a pdf file using `Latex`
