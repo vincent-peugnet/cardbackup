@@ -23,7 +23,7 @@ report() {
     ./analysedir.sh "$1"
     cat $template \
         | sed -e "s#<summary>#\\\input{$summary}#g" \
-        | sed -e "s#<log>#\\\VerbatimInput{$log}#g" \
+        | sed -e "s#<log>#\\\lstinputlisting{$log}#g" \
         > $report
     pdflatex $report --interaction batchmode 1> /dev/null
 }

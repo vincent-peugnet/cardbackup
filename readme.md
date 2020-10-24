@@ -37,7 +37,7 @@ Don't expect any GUI fancy button, CBU is an __nteractive Script__ in a __beauti
 1. dowload the folder
 2. install dependencies using following line on debian and derivated distributions
     ```
-    sudo apt install rsync mediainfo ffmpeg tree texlive texlive-latex-extra
+    sudo apt install rsync mediainfo ffmpeg tree texlive
     ```
 3. open the terminal in the folder, then type the following
     ```
