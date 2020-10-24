@@ -22,7 +22,7 @@ report() {
     log="$TMP_DIR/rsync.log"
     ./analysedir.sh "$1"
     sed -e "s#<summary>#\\\input{$summary}#g" $template | sed -e "s#<log>#\\\lstinputlisting{$log}#g" > $report
-    pdflatex $report --interaction batchmode
+    pdflatex $report --interaction batchmode 1> /dev/null
 }
 
 
