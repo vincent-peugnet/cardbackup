@@ -10,11 +10,17 @@
 
 ```
 
+![](https://img.shields.io/github/languages/top/vincent-peugnet/cardbackup?color=green)
+
 Card BackUp is the only good thing that came up in 2020.
 
 It's an experiment : to have an open source and linux software to manage backup for audiovisual projects.
 
 As backup is a critical step in any production, I don't think this could be serious to use it on any important project at this early stage of devellopement. But maybe, concider using it as a parallel solution to try when everything is already secure.
+
+## Interface
+
+Don't expect any GUI fancy button, CBU is an __nteractive Script__ in a __beautifull CLI__ :) But don't worry, there is no needs for any skills in linux bash or anything else, most of the time, the script will ask you for yes or no, name choosing, or open your browser to let you choose a directory.
 
 ## Dependencies
 
@@ -22,6 +28,7 @@ As backup is a critical step in any production, I don't think this could be seri
 - mediainfo
 - ffmpeg
 - tree
+- coreutils
 
 
 ## How to use it
@@ -56,3 +63,4 @@ It will analyse the copied card using mediainfo to create a little log and take 
 
 - Check if there is enought disk space before copying the card
 - Create a pdf file using `Latex`
+- Add the ability to create Preset for project

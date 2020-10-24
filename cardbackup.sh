@@ -20,6 +20,10 @@ echo "2020                                                  | |     ";
 echo -e "                                                      |_|     \e[39m";
 
 
+
+
+# _____________ SELECT MEDIA ____________________
+
 echo -e "\e[44mList of connected medias\e[49m"
 
 
@@ -47,13 +51,31 @@ then
     exit
 fi
 
+cardsize=$(df --output=size -B1 $src | sed -n 2p)
+cardused=$(df --output=used -B1 $src | sed -n 2p)
+
+
 echo -e "\e[33m"
 tree -shn $src
 echo "==============================="
 du -sh $src
+echo "==============================="
+
+echo "Card total size         : $(numfmt --to=iec-i --format='%18.2f' $cardsize)o"
+echo "Card total size (bytes) : $(printf %16d $cardsize )"
+echo "Card used size          : $(numfmt --to=iec-i --format='%18.2f' $cardused)o"
+echo "Card used size  (bytes) : $(printf %16d $cardused )"
 echo -e "\e[39m"
 
 confirm "You are going to backup this card"
+
+
+
+
+
+# _____________ SELECT TARGET ____________________
+
+
 
 echo -e "\e[44mYou can type a folder name inside wich the card will be created, just press enter if you don't\e[49m"
 
@@ -69,6 +91,27 @@ then
     exit
 fi
 
+# check if there is enought available disk space
+
+diskavail=$(df --output=avail $dir | sed -n 2p)
+echo "cardused : $cardused"
+echo "diskavail : $diskavail"
+
+if [[ $cardused > $diskavail ]]
+then
+    echo "Not enought disk space available"
+fi
+
+echo -e "\n\e[44mDisk where the card will be copied in :\e[49m"
+df -h $dir
+
+
+
+
+
+
+
+
 if [[ -n $cardname ]]
 then
 cdir=$dir'/'$cardname
@@ -76,7 +119,8 @@ else
 cdir=$dir
 fi
 
-# check if there is enought available disk space
+
+
 
 confirm "you have choosen the backup directory $dir, card will be copied in $cdir"
 
