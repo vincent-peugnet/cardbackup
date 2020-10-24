@@ -1,7 +1,7 @@
 #!/bin/bash
 
 confirm() {
-    echo -e "\e[44m$*\e[49m"
+    echo -e "\n\e[44m$*\e[49m"
     read -p "continue (y/N)?" choice
     case "$choice" in
     y | Y) echo "yes !" ;;
@@ -36,39 +36,54 @@ echo -e "\n\e[44mWich one do you want to backup ?\e[49m (type the corresponding 
 
 options=$(lsblk -lo MOUNTPOINT | grep ^/media)
 
-select choice in $options cancel
+select src in $options cancel
 do
-    test -n "$choice" && break
+    test -n "$src" && break
     echo "Device does not exist"
 done
 
-if [ $choice = "cancel" ]
+if [ $src = "cancel" ]
 then
     exit
 fi
 
 echo -e "\e[33m"
-tree -shn $choice
+tree -shn $src
 echo "==============================="
-du -sh $choice
+du -sh $src
 echo -e "\e[39m"
 
 confirm "You are going to backup this card"
 
-echo -e "\e[44mJust a quick simple backup or do you prefer to use a preset ?\e[49m"
+echo -e "\e[44mYou can type a folder name inside wich the card will be created, just press enter if you don't\e[49m"
 
-select choice in simple preset
-do
-if [ $choice = simple ]
+read -p 'Card folder name :' cardname
+
+echo 'card folder name :' $cardname
+
+dir=$(zenity --file-selection --directory 2>/dev/null)
+
+if [[ ! -d $dir ]]
 then
-    dir=$(zenity --file-selection --directory 2>/dev/null)
-
-    if [[ ! -d $dir ]]
-    then
-        echo "directory does not exist"
-        exit
-    fi
-
-    confirm "you have choosen the directory '$dir'"
+    echo "directory does not exist"
+    exit
 fi
-done
+
+if [[ -n $cardname ]]
+then
+cdir=$dir'/'$cardname
+else
+cdir=$dir
+fi
+
+# check if there is enought available disk space
+
+confirm "you have choosen the backup directory $dir, card will be copied in $cdir"
+
+
+echo -e "\e[34m"
+rsync -avh --progress --stats --preallocate $src $cdir
+echo -e "\e[39m"
+
+
+./analyse.sh $cdir
