@@ -112,22 +112,17 @@ df -h $dir
 
 
 
-if [[ -n $cardname ]]
-then
-cdir=$dir'/'$cardname
-else
-cdir=$dir
-fi
-
-
-
-
-confirm "you have choosen the backup directory $dir, card will be copied in $cdir"
+confirm "you have choosen the backup directory $dir"
 
 
 echo -e "\e[34m"
-rsync -avh --progress --stats --preallocate $src $cdir
+rsync -avh --progress --stats --preallocate $src $dir
 echo -e "\e[39m"
 
 
-./analyse.sh $cdir
+case "$choice" in
+y | Y) ./analysedir.sh "$dir" ;;
+
+esac
+
+
