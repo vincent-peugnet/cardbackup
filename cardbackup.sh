@@ -1,5 +1,11 @@
 #!/bin/bash
 
+export TMP_DIR=$(mktemp -dt cardbackup-XXXXXXXX)
+echo "tmp_dir : "$TMP_DIR
+
+# Copy all output to log file without ansi color tags
+exec &> >(tee >(sed 's/\x1b\[[0-9;]*m//g' > $TMP_DIR/cardbackup.log))
+
 confirm() {
     echo -e "\n\e[44m$*\e[49m"
     read -p "continue (y/N)?" choice

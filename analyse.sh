@@ -10,16 +10,16 @@ echo "size               : $FileSizeString4"
 echo "size (bytes)       : $FileSize"
 
 
-echo "\\subsection{$filename}" >> summary.tex
+echo "\\subsection{$filename}" >> $TMP_DIR/summary.tex
 
-echo "\\lstinline{$1}" >> summary.tex
+echo "\\lstinline{$1}" >> $TMP_DIR/summary.tex
 
-echo "\\subsubsection{mediainfo}" >> summary.tex
+echo "\\subsubsection{mediainfo}" >> $TMP_DIR/summary.tex
 
-echo "\\begin{lstlisting}" >> summary.tex
+echo "\\begin{lstlisting}" >> $TMP_DIR/summary.tex
 
-echo "size               : $FileSizeString4" >> summary.tex
-echo "size (bytes)       : $FileSize" >> summary.tex
+echo "size               : $FileSizeString4" >> $TMP_DIR/summary.tex
+echo "size (bytes)       : $FileSize" >> $TMP_DIR/summary.tex
 
 
 
@@ -71,7 +71,7 @@ then
 
 fi
 
-echo "\\end{lstlisting}" >> summary.tex
+echo "\\end{lstlisting}" >> $TMP_DIR/summary.tex
 
 
 
