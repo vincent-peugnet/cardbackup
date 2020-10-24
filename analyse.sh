@@ -10,6 +10,19 @@ echo "size               : $FileSizeString4"
 echo "size (bytes)       : $FileSize"
 
 
+echo "\\subsection{$filename}" >> summary.tex
+
+echo "\\lstinline{$1}" >> summary.tex
+
+echo "\\subsubsection{mediainfo}" >> summary.tex
+
+echo "\\begin{lstlisting}" >> summary.tex
+
+echo "size               : $FileSizeString4" >> summary.tex
+echo "size (bytes)       : $FileSize" >> summary.tex
+
+
+
 # Check if the file contain video stream
 
 VideoCount=$(mediainfo --Inform="General;%VideoCount%" "$1")
@@ -58,9 +71,7 @@ then
 
 fi
 
-
-}
-export -f analyse
+echo "\\end{lstlisting}" >> summary.tex
 
 
 

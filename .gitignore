@@ -1,1 +1,17 @@
+## Latex files
+*.aux
+*.pdf
+
+## Other generated files
+*.log
+
+## Tests
 screenshots
+
+## IDE files
+# VSCode
+.VSCode
+# Latex Workshop
+*.fdb_latexmk
+*.fls
+*.synctex.gz

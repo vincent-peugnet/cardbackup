@@ -77,36 +77,36 @@ confirm "You are going to backup this card"
 
 
 
-echo -e "\e[44mYou can type a folder name inside wich the card will be created, just press enter if you don't\e[49m"
-
-read -p 'Card folder name :' cardname
-
-echo 'card folder name :' $cardname
-
 dir=$(zenity --file-selection --directory 2>/dev/null)
 
 if [[ ! -d $dir ]]
 then
-    echo "directory does not exist"
+    echo -e "\n\e[101mdirectory does not exist !!!\e[49m"
     exit
 fi
 
 # check if there is enought available disk space
 
-diskavail=$(df --output=avail $dir | sed -n 2p)
-echo "cardused : $cardused"
-echo "diskavail : $diskavail"
+diskavail=$(df --output=avail -B1 $dir | sed -n 2p)
 
-if [[ $cardused > $diskavail ]]
+
+if [[ $cardused -gt $diskavail ]]
 then
-    echo "Not enought disk space available"
+    let "missingspace = $cardused - $diskavail"
+    echo -e "\n\e[101mNot enought disk space available !!!\e[49m"
+    echo "Missing space : $(numfmt --to=iec-i --format='%18.2f' $missingspace)o"
+    exit
 fi
 
 echo -e "\n\e[44mDisk where the card will be copied in :\e[49m"
 df -h $dir
 
 
+echo -e "\n\e[44mDo you want to analyse your backuped card and create a log\e[49m"
+read -p "(y/N)?" analyse
 
+
+# _____________ LAUNCH RSYNC ____________________
 
 
 
