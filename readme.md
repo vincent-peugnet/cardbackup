@@ -57,11 +57,10 @@ Then CBU will copy your files and compare MD5 checksums.
 
 A summary of the copy is displayed in your shell, indicating which files were copied or any errors that occured.
 
-It will analyse the copied card using mediainfo to create a little log and take some screenshots of the video files. 
+It will analyse the copied card using mediainfo to create a little log and take some screenshots of the video files. A PDF is generated containing media infos of files and 3 screens per video file.
 
 
 ## To Do
 
-- Check if there is enought disk space before copying the card
-- Create a pdf file using `Latex`
-- Add the ability to create Preset for project
+- Add the ability to create Preset for projects
+- Send the report pdf by email

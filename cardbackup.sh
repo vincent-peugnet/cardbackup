@@ -18,14 +18,18 @@ confirm() {
 report() {
     template="./report/report_template.tex"
     report="$TMP_DIR/report.tex"
+    backupid=$(echo $TMP_DIR | cut -d '-' -f2)
     summary="$TMP_DIR/summary.tex"
     log="$TMP_DIR/rsync.log"
     ./analysedir.sh "$1"
     cat $template \
+        | sed -e "s#<backupid>#$backupid#g" \
         | sed -e "s#<summary>#\\\input{$summary}#g" \
         | sed -e "s#<log>#\\\lstinputlisting{$log}#g" \
         > $report
-    pdflatex $report --interaction batchmode 1> /dev/null
+    pdflatex -interaction nonstopmode -output-directory $TMP_DIR $report 1> /dev/null
+    echo "temporary directory : $TMP_DIR"
+    xdg-open $TMP_DIR
 }
 
 
@@ -149,9 +153,6 @@ cardname=$(basename $src)
 
 case "$choice" in
 y | Y) report "$dir/$cardname" ;;
-
-
-
 esac
 
 

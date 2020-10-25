@@ -1,0 +1,2 @@
+General;%FileSize%\n%FileSize/String3%\n%VideoCount%\n%Format%\n
+Video;%Duration%\n%Duration/String4%\n%Format%\n%FrameRate/String%\n%Width/String%\n%Height/String%\n%BitRate/String%\n%DisplayAspectRatio%\n%ScanType/String%\n%ChromaSubsampling/String%\n%BitDepth/String%
