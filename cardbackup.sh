@@ -71,18 +71,26 @@ fi
 
 cardsize=$(df --output=size -B1 $src | sed -n 2p)
 cardused=$(df --output=used -B1 $src | sed -n 2p)
-
+let "percent = cardused * 100 / cardsize"
 
 echo -e "\e[33m"
-tree -shn $src
-echo "==============================="
+
+echo -e "\n  ----------------FILES-----------------"
+echo "  count|extension"
+echo -e "$(find $src -type f | sed 's/.*\.//' |  uniq -c | sort -bnr)"
+
+echo -e "\n  ----------------FOLDERS---------------"
+tree -n $src
+echo -e "\n  ----------------NAME------------------"
 du -sh $src
-echo "==============================="
+echo -e "\n  ----------------SIZE------------------"
 
 echo "Card total size         : $(numfmt --to=iec-i --format='%18.2f' $cardsize)o"
 echo "Card total size (bytes) : $(printf %16d $cardsize )"
 echo "Card used size          : $(numfmt --to=iec-i --format='%18.2f' $cardused)o"
 echo "Card used size  (bytes) : $(printf %16d $cardused )"
+echo "Card usage              : $percent %"
+
 echo -e "\e[39m"
 
 confirm "You are going to backup this card"
