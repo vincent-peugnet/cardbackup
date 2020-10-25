@@ -4,8 +4,21 @@ TMP_DIR=${TMP_DIR:-$(mktemp -dt cardbackup-XXXXXXXX)}
 
 filename=$(basename "$1")
 mediainfo=$(mediainfo --File_TestContinuousFileNames=0 --Inform=file://mediainfotemplate "$1")
-FileSize=$(       sed -n 1p <<< $mediainfo)
-FileSizeString4=$(sed -n 2p <<< $mediainfo)
+FileSize=$(               sed -n 1p <<< $mediainfo)
+FileSizeString4=$(        sed -n 2p <<< $mediainfo)
+VideoCount=$(             sed -n 3p <<< $mediainfo)
+Format=$(                 sed -n 4p <<< $mediainfo)
+Duration=$(               sed -n 5p <<< $mediainfo)
+DurationString4=$(        sed -n 6p <<< $mediainfo)
+VideoFormat=$(            sed -n 7p <<< $mediainfo)
+FrameRateString=$(        sed -n 8p <<< $mediainfo)
+WidthString=$(            sed -n 9p <<< $mediainfo)
+HeightString=$(           sed -n 10p<<< $mediainfo)
+BitRateString=$(          sed -n 11p <<< $mediainfo)
+AspectRatio=$(            sed -n 12p <<< $mediainfo)
+ScanTypeString=$(         sed -n 13p <<< $mediainfo)
+ChromaSubsamplingString=$(sed -n 14p <<< $mediainfo)
+BitDepthString=$(         sed -n 15p <<< $mediainfo)
 
 echo -e "\n"
 echo -e "\e[34m\e[1mfilename           : $filename\e[0m"
@@ -25,21 +38,8 @@ size (bytes)       : $FileSize" | tee -a $TMP_DIR/summary.tex
 
 # Check if the file contain video stream
 
-VideoCount=$(sed -n 3p <<< $mediainfo)
-if [[ -n $VideoCount ]]
+if [[ -n $VideoCount && -n $Duration ]]
 then
-    Format=$(                 sed -n 4p <<< $mediainfo)
-    Duration=$(               sed -n 5p <<< $mediainfo)
-    DurationString4=$(        sed -n 6p <<< $mediainfo)
-    VideoFormat=$(            sed -n 7p <<< $mediainfo)
-    FrameRateString=$(        sed -n 8p <<< $mediainfo)
-    WidthString=$(            sed -n 9p <<< $mediainfo)
-    HeightString=$(           sed -n 10p<<< $mediainfo)
-    BitRateString=$(          sed -n 11p <<< $mediainfo)
-    AspectRatio=$(            sed -n 12p <<< $mediainfo)
-    ScanTypeString=$(         sed -n 13p <<< $mediainfo)
-    ChromaSubsamplingString=$(sed -n 14p <<< $mediainfo)
-    BitDepthString=$(         sed -n 15p <<< $mediainfo)
 
     echo "\
 format             : $Format
