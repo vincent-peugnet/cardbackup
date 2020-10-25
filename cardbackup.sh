@@ -16,7 +16,7 @@ confirm() {
 }
 
 report() {
-    template="./report/report_template.tex"
+    template="./reporttemplate.tex"
     report="$TMP_DIR/report.tex"
     backupid=$(echo $TMP_DIR | cut -d '-' -f2)
     summary="$TMP_DIR/summary.tex"
