@@ -3,7 +3,7 @@
 TMP_DIR=${TMP_DIR:-$(mktemp -dt cardbackup-XXXXXXXX)}
 
 filename=$(basename "$1")
-mediainfo=$(mediainfo --Inform=file://mediainfotemplate "$1")
+mediainfo=$(mediainfo --File_TestContinuousFileNames=0 --Inform=file://mediainfotemplate "$1")
 FileSize=$(       sed -n 1p <<< $mediainfo)
 FileSizeString4=$(sed -n 2p <<< $mediainfo)
 
