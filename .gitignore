@@ -3,6 +3,7 @@
 *.pdf
 
 ## Other generated files
+VERSION
 *.log
 
 ## Tests
