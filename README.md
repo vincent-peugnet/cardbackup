@@ -34,16 +34,20 @@ Don't expect any GUI fancy button, CBU is an __nteractive Script__ in a __beauti
 
 ## How to use it
 
-1. dowload the folder
-2. install dependencies using following line on debian and derivated distributions
+1. dowload the folder, unzip it and open it in a terminal
+2. install dependencies on debian and derivatives:
     ```
     sudo apt install rsync mediainfo ffmpeg tree texlive
     ```
-3. open the terminal in the folder, then type the following
+3. install cardbackup:
     ```
-    ./cardbackup.sh
+    sudo make install
     ```
-4. follow the step inside the program
+4. run it:
+    ```
+    cardbackup
+    ```
+5. follow the step inside the program
 
 ## What does CardBackup actually do ?
 

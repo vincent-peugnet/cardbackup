@@ -1,4 +1,5 @@
 #!/bin/bash
+DIR=$(dirname -- "$(readlink -f -- "$BASH_SOURCE")")
 
 export TMP_DIR=$(mktemp -dt cardbackup-XXXXXXXX)
 echo "tmp_dir : "$TMP_DIR
@@ -16,12 +17,12 @@ confirm() {
 }
 
 report() {
-    template="./reporttemplate.tex"
+    template="$DIR/../share/cardbackup/reporttemplate.tex"
     report="$TMP_DIR/report.tex"
     backupid=$(echo $TMP_DIR | cut -d '-' -f2)
     summary="$TMP_DIR/summary.tex"
     log="$TMP_DIR/rsync.log"
-    ./analysedir.sh "$1"
+    $DIR/analysedir "$1"
     cat $template \
         | sed -e "s#<backupid>#$backupid#g" \
         | sed -e "s#<summary>#\\\input{$summary}#g" \
