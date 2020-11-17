@@ -5,6 +5,7 @@
 ## Other generated files
 VERSION
 *.log
+cardbackup-*.tar.gz
 
 ## Tests
 screenshots
