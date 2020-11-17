@@ -10,7 +10,7 @@ screenshots
 
 ## IDE files
 # VSCode
-.VSCode
+.vscode
 # Latex Workshop
 *.fdb_latexmk
 *.fls
