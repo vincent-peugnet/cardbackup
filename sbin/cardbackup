@@ -8,6 +8,7 @@ echo "tmp_dir : "$TMP_DIR
 exec &> >(tee >(sed 's/\x1b\[[0-9;]*m//g' > $TMP_DIR/cardbackup.log))
 
 confirm() {
+    local choice
     echo -e "\n\e[44m$*\e[49m"
     read -p "continue (y/N)?" choice
     case "$choice" in
@@ -63,26 +64,34 @@ echo -e "\n\e[44mWich one do you want to backup ?\e[49m (type the corresponding 
 
 options=$(lsblk -lo MOUNTPOINT | grep ^/media)
 
-select src in $options cancel
+select src in $options "select folder manually" cancel
 do
     test -n "$src" && break
     echo "Device does not exist"
 done
 
-if [ $src = "cancel" ]
-then
-    exit
-fi
+case $src in
+
+    cancel)
+        exit
+        ;;
+
+    "select folder manually")
+        src=$(zenity --file-selection --directory 2>/dev/null)
+        ;;
+esac
 
 cardsize=$(df --output=size -B1 $src | sed -n 2p)
 cardused=$(df --output=used -B1 $src | sed -n 2p)
+foldersize=$(du -bs $src | cut -f1)
 let "percent = cardused * 100 / cardsize"
 
 echo -e "\e[33m"
 
 echo -e "\n  ----------------FILES-----------------"
 echo "  count|extension"
-echo -e "$(find $src -type f | sed 's/.*\.//' |  uniq -c | sort -bnr)"
+echo -e "$(find $src -type f -printf '%f\n' | sed -r -n 's/.+(\..*)$/\1/p' | sort | uniq -c | sort -bnr
+)"
 
 echo -e "\n  ----------------FOLDERS---------------"
 tree -n $src
@@ -90,15 +99,17 @@ echo -e "\n  ----------------NAME------------------"
 du -sh $src
 echo -e "\n  ----------------SIZE------------------"
 
-echo "Card total size         : $(numfmt --to=iec-i --format='%18.2f' $cardsize)o"
-echo "Card total size (bytes) : $(printf %16d $cardsize )"
-echo "Card used size          : $(numfmt --to=iec-i --format='%18.2f' $cardused)o"
-echo "Card used size  (bytes) : $(printf %16d $cardused )"
-echo "Card usage              : $percent %"
+echo "Volume total size         : $(numfmt --to=iec-i --format='%18.2f' $cardsize)o"
+echo "Volume total size (bytes) : $(printf %16d $cardsize )"
+echo "Folder total size         : $(numfmt --to=iec-i --format='%18.2f' $foldersize)o"
+echo "Folder total size (bytes) : $(printf %16d $foldersize)"
+echo "Volume used size          : $(numfmt --to=iec-i --format='%18.2f' $cardused)o"
+echo "Volume used size  (bytes) : $(printf %16d $cardused )"
+echo "Volume usage              : $percent %"
 
 echo -e "\e[39m"
 
-confirm "You are going to backup this card"
+confirm "If you're ok with this selection, let's choose a target directory"
 
 
 
@@ -121,7 +132,7 @@ fi
 diskavail=$(df --output=avail -B1 $dir | sed -n 2p)
 
 
-if [[ $cardused -gt $diskavail ]]
+if [[ $foldersize -gt $diskavail ]]
 then
     let "missingspace = $cardused - $diskavail"
     echo -e "\n\e[101mNot enought disk space available !!!\e[49m"
