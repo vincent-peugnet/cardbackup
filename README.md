@@ -11,6 +11,7 @@
 ```
 
 ![language badge](https://img.shields.io/github/languages/top/vincent-peugnet/cardbackup?color=green)
+[![latest release](https://img.shields.io/github/v/release/vincent-peugnet/cardbackup)](https://github.com/vincent-peugnet/cardbackup/releases/latest)
 
 Card BackUp is the only good thing that came up in 2020.
 
@@ -63,6 +64,14 @@ A summary of the copy is displayed in your shell, indicating which files were co
 
 It will analyse the copied card using mediainfo to create a little log and take some screenshots of the video files. A PDF is generated containing media infos of files and 3 screens per video file.
 
+## Create a release
+
+```bash
+# Releases must be created on master branch
+git checkout master
+git tag x.x.x
+git push --tags
+```
 
 ## To Do
 

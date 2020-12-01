@@ -48,7 +48,7 @@ clean:
 
 distclean: clean
 	rm -f VERSION
-	rm cardbackup-*.tar.gz
+	rm -f cardbackup-*.tar.gz
 
 dist: all $(PKG_FILE)
 
