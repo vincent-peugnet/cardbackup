@@ -28,19 +28,19 @@ PKG_NAME = $(NAME)-$(VERSION)
 PKG_FILE = $(PKG_NAME).tar.gz
 
 # Default installation paths
-SBINDIR  = $(DESTDIR)$(PREFIX)/sbin
+BINDIR   = $(DESTDIR)$(PREFIX)/bin
 SHAREDIR = $(DESTDIR)$(PREFIX)/share/$(NAME)
-DIRS     = $(SBINDIR) $(SHAREDIR)
+DIRS     = $(BINDIR) $(SHAREDIR)
 
-SBINS       = $(wildcard sbin/*)
+BINS        = $(wildcard bin/*)
 SHARES      = $(wildcard share/$(NAME)/*)
-INST_SBINS  = $(patsubst sbin/%, $(SBINDIR)/%, $(SBINS))
+INST_SBINS  = $(patsubst bin/%, $(BINDIR)/%, $(BINS))
 INST_SHARES = $(patsubst share/$(NAME)/%, $(SHAREDIR)/%, $(SHARES))
 
 all: share/$(NAME)/VERSION
 
-install: all $(DIRS)
-	install -D $(SBINS) $(SBINDIR)
+install: all | $(DIRS)
+	install -D $(BINS) $(BINDIR)
 	install -D $(SHARES) $(SHAREDIR) -m 644
 
 clean:
