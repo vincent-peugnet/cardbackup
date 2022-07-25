@@ -21,6 +21,6 @@ DIR=$(dirname -- "$(readlink -f -- "$BASH_SOURCE")")
 
 export TMP_DIR=${TMP_DIR:-$(mktemp -dt analysedir-XXXXXXXX)}
 
-rm -f $TMP_DIR/summary.tex
+rm -f "$TMP_DIR/summary.tex"
 
-find $1 -type f | sort -n | xargs -L1 -I% $DIR/analyse '%'
+find "$1" -type f | sort -n | xargs -I% $DIR/analyse '%'

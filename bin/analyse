@@ -71,15 +71,15 @@ bitrate            : $BitRateString
 aspect ratio       : $AspectRatio
 scan type          : $ScanTypeString
 chroma subsampling : $ChromaSubsamplingString
-bit depth          : $BitDepthString" | tee -a $TMP_DIR/summary.tex
+bit depth          : $BitDepthString" | tee -a "$TMP_DIR/summary.tex"
 
 
-    echo "\\end{lstlisting}" >> $TMP_DIR/summary.tex
+    echo "\\end{lstlisting}" >> "$TMP_DIR/summary.tex"
 
     # Screenshots
 
     screendir="$TMP_DIR/screenshots"
-    mkdir -p $screendir
+    mkdir -p "$screendir"
 
     md5=$(echo $1 | md5sum | cut -d' ' -f1)
     screenquality="-vf scale=1280:-1 -q:v 5"
@@ -100,11 +100,11 @@ bit depth          : $BitDepthString" | tee -a $TMP_DIR/summary.tex
 \\includegraphics[width=0.3\\textwidth]{$screendir/$md5-screenshot0.jpg} &
 \\includegraphics[width=0.3\\textwidth]{$screendir/$md5-screenshot1.jpg} &
 \\includegraphics[width=0.3\\textwidth]{$screendir/$md5-screenshot2.jpg} \\\\
-\\end{tabular}" >> $TMP_DIR/summary.tex
+\\end{tabular}" >> "$TMP_DIR/summary.tex"
 
 
 else
-    echo "\\end{lstlisting}" >> $TMP_DIR/summary.tex
+    echo "\\end{lstlisting}" >> "$TMP_DIR/summary.tex"
 fi
 
 
