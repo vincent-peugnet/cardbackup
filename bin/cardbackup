@@ -197,10 +197,15 @@ do
     echo -e "\n\e[44mVerifying checksums: run $check\e[49m"
 
     [ -s "$prevlog" ] && rsyncfiles="--files-from=$prevlog"
-    rsync --checksum --out-format='%n' --archive --human-readable $rsyncfiles --log-file="$TMP_DIR/rsync.log" "$src/" "$dest" | tee "$currlog"
+    rsync --checksum --checksum-choice=md5 --out-format='%i	%n	%C' --info=NAME1,NAME2 --archive --human-readable $rsyncfiles --log-file="$TMP_DIR/rsync.log" --log-file-format='%i %n
+	%C %n' "$src/" "$dest" \
+        | grep '^.f' \
+        | tee >(grep -E '[<>]' | cut -f2 > "$currlog") \
+        | cut -f2-
     if [ -s "$currlog" ]
     then
-        echo "These files mismatched and have been retransfered"
+        echo -e "\n\e[41mThese files mismatched and have been retransfered:\e[49m"
+        cat "$currlog"
     else
         break
     fi
