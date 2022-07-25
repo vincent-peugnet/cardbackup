@@ -187,7 +187,7 @@ echo -e "\e[39m"
 
 cardname=$(basename $src)
 
-case "$choice" in
+case "$analyse" in
 y | Y) report "$dir/$cardname" ;;
 esac
 
