@@ -179,16 +179,42 @@ read -p "(y/N)?" analyse
 
 
 confirm "you have choosen the backup directory "$dir""
-
+cardname=$(basename "$src")
+dest="$dir/$cardname"
+mkdir "$dest"
 
 echo -e "\e[34m"
-rsync -avh --progress --stats --log-file=$TMP_DIR/rsync.log --preallocate "$src" "$dir"
+rsync --archive --verbose --human-readable --info=PROGRESS2 --stats --log-file="$TMP_DIR/rsync.log" --preallocate "$src/" "$dest"
 echo -e "\e[39m"
 
-cardname=$(basename "$src")
+check=0
+while [[ $check -lt 3 ]]
+do
+    prevlog="$TMP_DIR/rsync-check-$check.log"
+    let check++
+    currlog="$TMP_DIR/rsync-check-$check.log"
+
+    echo -e "\n\e[44mVerifying checksums: run $check\e[49m"
+
+    [ -s "$prevlog" ] && rsyncfiles="--files-from=$prevlog"
+    rsync --checksum --out-format='%n' --archive --human-readable $rsyncfiles --log-file="$TMP_DIR/rsync.log" "$src/" "$dest" | tee "$currlog"
+    if [ -s "$currlog" ]
+    then
+        echo "These files mismatched and have been retransfered"
+    else
+        break
+    fi
+done
+if [ -f "$currlog" ] && [ ! -s "$currlog" ]
+then
+    echo -e "\n\e[44mAll checksums are correct\e[49m"
+else
+    echo -e "\n\e[41mSome checksums are still incorrect after $check runs\e[49m"
+fi
+
 
 case "$analyse" in
-y | Y) report "$dir/$cardname" ;;
+y | Y) report "$dest" ;;
 esac
 
 
