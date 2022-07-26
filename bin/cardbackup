@@ -197,8 +197,8 @@ do
     echo -e "\n\e[44mVerifying checksums: run $check\e[49m"
 
     [ -s "$prevlog" ] && rsyncfiles="--files-from=$prevlog"
-    rsync --checksum --checksum-choice=md5 --out-format='%i	%n	%C' --info=NAME1,NAME2 --archive --human-readable $rsyncfiles --log-file="$TMP_DIR/rsync.log" --log-file-format='%i %n
-	%C %n' "$src/" "$dest" \
+    rsync --checksum --checksum-choice=xxh128 --out-format='%i	%n	%C' --info=NAME1,NAME2 --archive --human-readable $rsyncfiles --log-file="$TMP_DIR/rsync.log" --log-file-format='%i %n
+	%C  %n' "$src/" "$dest" \
         | grep '^.f' \
         | tee >(grep -E '[<>]' | cut -f2 > "$currlog") \
         | cut -f2-
