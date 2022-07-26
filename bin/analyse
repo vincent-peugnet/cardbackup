@@ -45,9 +45,9 @@ echo -e "\e[34m\e[1mfilename           : $filename\e[0m"
 
 echo "\
 \\subsection{\\lstinline{$filename}}
-\\lstinline{$1}
-\\subsubsection{mediainfo}
-\\begin{lstlisting}" >> $TMP_DIR/summary.tex
+\\lstinline[basicstyle=\\ttfamily\\small]{$1}
+\\begin{multicols}{2}
+\\begin{lstlisting}[basicstyle=\\ttfamily\\small]" >> $TMP_DIR/summary.tex
 
 echo "\
 size               : $FileSizeString4
@@ -74,7 +74,7 @@ chroma subsampling : $ChromaSubsamplingString
 bit depth          : $BitDepthString" | tee -a "$TMP_DIR/summary.tex"
 
 
-    echo "\\end{lstlisting}" >> "$TMP_DIR/summary.tex"
+    echo "\\end{lstlisting}\\end{multicols}" >> "$TMP_DIR/summary.tex"
 
     # Screenshots
 
@@ -94,7 +94,6 @@ bit depth          : $BitDepthString" | tee -a "$TMP_DIR/summary.tex"
     ffmpeg -y -loglevel fatal -ss $l -i "$1" -vframes 1 $screenquality "$screendir/$md5-screenshot2.jpg"
 
     echo "\
-\\subsubsection{screenshots}
 \\noindent
 \\begin{tabular}{lll}
 \\includegraphics[width=0.3\\textwidth]{$screendir/$md5-screenshot0.jpg} &
