@@ -83,7 +83,6 @@ bit depth          : $BitDepthString" | tee -a "$TMP_DIR/summary.tex"
 
     md5=$(echo $1 | md5sum | cut -d' ' -f1)
     screenquality="-vf scale=1280:-1 -q:v 5"
-    echo $md5
 
     let "d = ${Duration%.*}"
     let "d = d / 1000"
